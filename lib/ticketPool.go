@@ -44,15 +44,15 @@ func (this *ticketPool)Return()  {
 }
 
 func (this *ticketPool)Active() bool {
-
+	return true
 }
 
 func (this *ticketPool)Total() uint32 {
-
+	return this.total
 }
 
 func (this *ticketPool)Remainder() uint32 {
-
+	return 0
 }
 
 

@@ -24,18 +24,19 @@ func (this *generator)Stop(){
 
 }
 
-func GetGenerator(param Param) Generator {
+func NewGenerator(param Param) (Generator,error){
 	if!param.Check(){
 		//打印错误日志
+		return nil,nil
 	}
 	gen := &generator{
-		timeoutNS: param.timeoutNS,
-		lps: param.lps,
-		durationNs: param.durationNs,
-		caller: param.caller,
-		resultCh: param.resultCh,
+		timeoutNS: param.TimeoutNS,
+		lps: param.LPS,
+		durationNs: param.DurationNS,
+		caller: param.Caller,
+		resultCh: param.ResultCh,
 	}
-	return gen
+	return gen,nil
 }
 
 func (this *generator) init() {
