@@ -35,24 +35,24 @@ func NewTicketPool(total uint32)  TicketPool{
 }
 
 
-func (this *ticketPool)Take()  {
-
+func (t *ticketPool)Take()  {
+	<-t.poolCh
 }
 
-func (this *ticketPool)Return()  {
-
+func (t *ticketPool)Return()  {
+	t.poolCh <- struct{}{}
 }
 
-func (this *ticketPool)Active() bool {
-
+func (t *ticketPool)Active() bool {
+	return true
 }
 
-func (this *ticketPool)Total() uint32 {
-
+func (t *ticketPool)Total() uint32 {
+	return t.total
 }
 
-func (this *ticketPool)Remainder() uint32 {
-
+func (t *ticketPool)Remainder() uint32 {
+	return uint32(len(t.poolCh))
 }
 
 
