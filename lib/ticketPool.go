@@ -6,8 +6,6 @@ type TicketPool interface {
 	Take()
 	// 归还一张票。
 	Return()
-	// 票池是否已被激活。
-	Active() bool
 	// 票的总数。
 	Total() uint32
 	// 剩余的票数。
@@ -21,9 +19,8 @@ type ticketPool struct {
 }
 
 func NewTicketPool(total uint32)  TicketPool{
-	myPool := &ticketPool{
+	myPool := ticketPool{
 		total: total,
-		active: true,
 	}
 	ch := make(chan struct{}, total)
 	myPool.poolCh = ch
@@ -31,28 +28,24 @@ func NewTicketPool(total uint32)  TicketPool{
 	for i:=0; i < int(total); i++{
 		ch <- struct{}{}
 	}
-	return myPool
+	return &myPool
 }
 
 
-func (this *ticketPool)Take()  {
-
+func (t *ticketPool)Take()  {
+	<-t.poolCh
 }
 
-func (this *ticketPool)Return()  {
-
+func (t *ticketPool)Return()  {
+	t.poolCh <- struct{}{}
 }
 
-func (this *ticketPool)Active() bool {
-	return true
+func (t *ticketPool)Total() uint32 {
+	return t.total
 }
 
-func (this *ticketPool)Total() uint32 {
-	return this.total
-}
-
-func (this *ticketPool)Remainder() uint32 {
-	return 0
+func (t *ticketPool)Remainder() uint32 {
+	return uint32(len(t.poolCh))
 }
 
 

@@ -29,8 +29,7 @@ func TestStart(t *testing.T)  {
 
 	gen, err := NewGenerator(pset)
 	if err != nil {
-		t.Fatalf("Load generator initialization failing: %s\n",
-			err)
+		t.Fatalf("Load generator initialization failing: %s\n", err)
 	}
 
 	t.Log("Start load generator...")

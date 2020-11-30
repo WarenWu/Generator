@@ -2,7 +2,6 @@ package testhelper
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"generator/lib"
 	"math"
@@ -45,12 +44,6 @@ func (client *TcpClient) Call(rawReq lib.RawReq, timeout time.Duration) (lib.Raw
 	var rawResp lib.RawResp
 	var err error
 	rawResp.ID = rawReq.ID
-
-	time.AfterFunc(timeout, func() {
-		atomic.StoreUint32(&flag, 1)
-		rawResp.Err = errors.New("TcpClient Call timeout")
-		rawResp.Elapse = timeout
-	})
 
 	conn, err := net.DialTimeout("tcp", client.addr, timeout)
 	if err != nil {
